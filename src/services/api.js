@@ -8,6 +8,14 @@ const getAuthHeaders = () => {
   };
 };
 
+const handleResponse = async (res) => {
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok || json.success === false) {
+    throw new Error(json.message || `Request failed with status ${res.status}`);
+  }
+  return json.data !== undefined ? json.data : json;
+};
+
 export const api = {
   // Auth
   login: async (credentials) => {
@@ -32,13 +40,13 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(passwords),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   // Profile
   getProfile: async () => {
     const res = await fetch(`${API_BASE}/profile`);
-    return res.json();
+    return handleResponse(res);
   },
 
   updateProfile: async (data) => {
@@ -47,13 +55,14 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   // Skills
   getSkills: async () => {
     const res = await fetch(`${API_BASE}/skills`);
-    return res.json();
+    const data = await handleResponse(res);
+    return Array.isArray(data) ? data : (data?.data || []);
   },
 
   createSkill: async (data) => {
@@ -62,7 +71,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   updateSkill: async (id, data) => {
@@ -71,7 +80,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   deleteSkill: async (id) => {
@@ -79,7 +88,7 @@ export const api = {
       method: "DELETE",
       headers: getAuthHeaders(),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   reorderSkills: async (order) => {
@@ -88,18 +97,19 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify({ order }),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   // Projects
   getProjects: async () => {
     const res = await fetch(`${API_BASE}/projects`);
-    return res.json();
+    const data = await handleResponse(res);
+    return Array.isArray(data) ? data : (data?.data || []);
   },
 
   getProjectBySlug: async (slug) => {
     const res = await fetch(`${API_BASE}/projects/${slug}`);
-    return res.json();
+    return handleResponse(res);
   },
 
   createProject: async (data) => {
@@ -108,7 +118,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   updateProject: async (id, data) => {
@@ -117,7 +127,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   deleteProject: async (id) => {
@@ -125,13 +135,20 @@ export const api = {
       method: "DELETE",
       headers: getAuthHeaders(),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
-  // Experience
+  // Experience (both singular and plural methods)
   getExperiences: async () => {
     const res = await fetch(`${API_BASE}/experience`);
-    return res.json();
+    const data = await handleResponse(res);
+    return Array.isArray(data) ? data : (data?.data || []);
+  },
+
+  getExperience: async () => {
+    const res = await fetch(`${API_BASE}/experience`);
+    const data = await handleResponse(res);
+    return Array.isArray(data) ? data : (data?.data || []);
   },
 
   createExperience: async (data) => {
@@ -140,7 +157,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   updateExperience: async (id, data) => {
@@ -149,7 +166,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   deleteExperience: async (id) => {
@@ -157,13 +174,20 @@ export const api = {
       method: "DELETE",
       headers: getAuthHeaders(),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
-  // Education
+  // Education (both singular and plural methods)
   getEducations: async () => {
     const res = await fetch(`${API_BASE}/education`);
-    return res.json();
+    const data = await handleResponse(res);
+    return Array.isArray(data) ? data : (data?.data || []);
+  },
+
+  getEducation: async () => {
+    const res = await fetch(`${API_BASE}/education`);
+    const data = await handleResponse(res);
+    return Array.isArray(data) ? data : (data?.data || []);
   },
 
   createEducation: async (data) => {
@@ -172,7 +196,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   updateEducation: async (id, data) => {
@@ -181,7 +205,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   deleteEducation: async (id) => {
@@ -189,7 +213,7 @@ export const api = {
       method: "DELETE",
       headers: getAuthHeaders(),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   // Contact / Messages
@@ -199,14 +223,24 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    return res.json();
+    return handleResponse(res);
+  },
+
+  sendContactMessage: async (data) => {
+    const res = await fetch(`${API_BASE}/contact`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res);
   },
 
   getMessages: async () => {
     const res = await fetch(`${API_BASE}/messages`, {
       headers: getAuthHeaders(),
     });
-    return res.json();
+    const data = await handleResponse(res);
+    return Array.isArray(data) ? data : (data?.data || []);
   },
 
   markMessageRead: async (id, read = true) => {
@@ -215,7 +249,16 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify({ read }),
     });
-    return res.json();
+    return handleResponse(res);
+  },
+
+  updateMessageReadStatus: async (id, read = true) => {
+    const res = await fetch(`${API_BASE}/messages/${id}/read`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ read }),
+    });
+    return handleResponse(res);
   },
 
   deleteMessage: async (id) => {
@@ -223,7 +266,7 @@ export const api = {
       method: "DELETE",
       headers: getAuthHeaders(),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   // Admin Stats
@@ -231,7 +274,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/admin/stats`, {
       headers: getAuthHeaders(),
     });
-    return res.json();
+    return handleResponse(res);
   },
 
   reseedData: async () => {
@@ -239,6 +282,6 @@ export const api = {
       method: "POST",
       headers: getAuthHeaders(),
     });
-    return res.json();
+    return handleResponse(res);
   },
 };
