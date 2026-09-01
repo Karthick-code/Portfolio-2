@@ -131,7 +131,7 @@ export const ContactSection = ({ profile }) => {
                     <span>LinkedIn</span>
                   </a>
                 )}
-                {profile?.website && (
+                {/* {profile?.website && (
                   <a
                     href={profile.website}
                     target="_blank"
@@ -141,7 +141,7 @@ export const ContactSection = ({ profile }) => {
                     <Globe className="w-4 h-4 text-emerald-500" />
                     <span>Website</span>
                   </a>
-                )}
+                )} */}
               </div>
             </div>
           </div>

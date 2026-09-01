@@ -40,12 +40,12 @@ export const Hero = ({
 
         {/* Name Heading */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-neutral-950 dark:text-white mb-4">
-          {profile?.name || "[YOUR NAME]"}
+          {profile?.name }
         </h1>
 
         {/* Professional Title */}
         <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-neutral-600 dark:text-neutral-300 mb-6">
-          {profile?.title || "Full Stack Developer"}
+          {profile?.title }
         </h2>
 
         {/* Core Tagline / Philosophy */}
@@ -87,7 +87,7 @@ export const Hero = ({
         {/* Tech Stack Indicator Note */}
         <div className="mt-14 inline-flex items-center gap-2 text-xs font-mono text-neutral-500 dark:text-neutral-500">
           <Terminal className="w-3.5 h-3.5 text-cyan-500" />
-          <span>Interactive floating ecosystem dynamically connected to MySQL</span>
+          <span>Made with Logic.</span>
         </div>
       </div>
     </section>
