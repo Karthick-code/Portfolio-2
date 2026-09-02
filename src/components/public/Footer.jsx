@@ -15,8 +15,8 @@ export const Footer = ({ profile }) => {
             <div className="w-8 h-8 rounded-lg bg-neutral-900 dark:bg-white flex items-center justify-center text-white dark:text-neutral-950">
               {/* <Code2 className="w-4 h-4" /> */}
               <img
-                className="Logo"
-                href="https://res.cloudinary.com/dw94vpvkd/image/upload/v1788245790/portfolio-logo_qgrvgi.png"
+                className="w-4 h-4"
+                src="https://res.cloudinary.com/dw94vpvkd/image/upload/v1788245790/portfolio-logo_qgrvgi.png"
               />
             </div>
             <div>

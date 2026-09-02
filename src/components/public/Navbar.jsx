@@ -78,7 +78,7 @@ export const Navbar = ({ profile, onResumeClick }) => {
           <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform">
             {/* <Code2 className="w-5 h-5" /> */}
             {/*  */}
-            <img className = "Logo" href = 'https://res.cloudinary.com/dw94vpvkd/image/upload/v1788245790/portfolio-logo_qgrvgi.png'/>
+            <img className = "w-5 h-5" src = 'https://res.cloudinary.com/dw94vpvkd/image/upload/v1788245790/portfolio-logo_qgrvgi.png'/>
 
           </div>
           <div className="flex flex-col">
