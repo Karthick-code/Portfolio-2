@@ -17,7 +17,7 @@ export const ResumeModal = ({
     window.print();
   };
  
-
+// -- download option will be implemented in future 
 // const handleDownloadPDF = () => {
 //   const element = document.getElementById("resume");
 

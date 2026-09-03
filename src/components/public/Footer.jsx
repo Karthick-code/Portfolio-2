@@ -13,11 +13,11 @@ export const Footer = ({ profile }) => {
           {/* Brand */}
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-neutral-900 dark:bg-white flex items-center justify-center text-white dark:text-neutral-950">
-              {/* <Code2 className="w-4 h-4" /> */}
-              <img
+              <Code2 className="w-4 h-4" />
+              {/* <img
                 className="w-4 h-4"
                 src="https://res.cloudinary.com/dw94vpvkd/image/upload/v1788245790/portfolio-logo_qgrvgi.png"
-              />
+              /> */}
             </div>
             <div>
               <p className="font-mono font-bold text-sm text-neutral-900 dark:text-neutral-100">

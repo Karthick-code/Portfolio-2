@@ -257,7 +257,7 @@ export const ContactSection = ({ profile }) => {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Saving message to MySQL...</span>
+                      <span>Sending message...</span>
                     </>
                   ) : (
                     <>
