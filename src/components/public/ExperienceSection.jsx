@@ -2,7 +2,7 @@ import React from "react";
 import { Calendar, MapPin, CheckCircle2 } from "lucide-react";
 
 export const ExperienceSection = ({ experience = [], isLoading = false }) => {
-  const endDate = ''
+  let endDate = ''
   return (
     <section id="experience" className="py-20 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
