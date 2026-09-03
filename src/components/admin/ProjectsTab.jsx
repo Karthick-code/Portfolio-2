@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { api } from "../../services/api.js";
 import {
@@ -21,12 +23,14 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
   const [feedback, setFeedback] = useState({ type: null, msg: "" });
 
   const handleOpenNew = () => {
+    const defaultImg = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop";
     setEditingProject({
       title: "",
       description: "",
       problem: "",
       solution: "",
-      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop",
+      image: defaultImg,
+      imageUrl: defaultImg,
       technologies: ["React", "Node.js", "Express", "MySQL"],
       features: ["Decoupled microservices", "Optimized schema indices"],
       category: "Full Stack",
@@ -39,7 +43,21 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
   };
 
   const handleOpenEdit = (project) => {
-    setEditingProject({ ...project });
+    const img = project.image || project.imageUrl || "";
+    const prob = project.problem || (Array.isArray(project.challenges) && project.challenges.length > 0 ? project.challenges.join("\n\n") : "");
+    const sol = project.solution || (Array.isArray(project.solutions) && project.solutions.length > 0 ? project.solutions.join("\n\n") : "");
+    const feats = Array.isArray(project.features) && project.features.length > 0
+      ? project.features
+      : (Array.isArray(project.solutions) ? project.solutions : []);
+
+    setEditingProject({
+      ...project,
+      image: img,
+      imageUrl: img,
+      problem: prob,
+      solution: sol,
+      features: feats,
+    });
     setIsModalOpen(true);
     setFeedback({ type: null, msg: "" });
   };
@@ -95,12 +113,25 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
     setIsSaving(true);
     try {
       const projId = editingProject._id || editingProject.id;
+      const targetImg = (editingProject.image || editingProject.imageUrl || "").trim();
+      const payload = {
+        ...editingProject,
+        image: targetImg,
+        imageUrl: targetImg,
+        challenges: editingProject.problem
+          ? [editingProject.problem]
+          : (editingProject.challenges || []),
+        solutions: editingProject.features && editingProject.features.length > 0
+          ? editingProject.features
+          : (editingProject.solution ? [editingProject.solution] : (editingProject.solutions || [])),
+      };
+
       if (projId) {
-        await api.updateProject(projId, editingProject);
-        setFeedback({ type: "success", msg: `Project "${editingProject.title}" updated.` });
+        await api.updateProject(projId, payload);
+        setFeedback({ type: "success", msg: `Project "${editingProject.title}" updated successfully in MySQL.` });
       } else {
-        await api.createProject(editingProject);
-        setFeedback({ type: "success", msg: `Project "${editingProject.title}" created.` });
+        await api.createProject(payload);
+        setFeedback({ type: "success", msg: `Project "${editingProject.title}" created successfully in MySQL.` });
       }
       setIsModalOpen(false);
       setEditingProject(null);
@@ -115,9 +146,9 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
             Projects &amp; Case Studies
           </h1>
           <p className="text-xs font-mono text-neutral-400 mt-1">
@@ -128,7 +159,7 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
         <button
           type="button"
           onClick={handleOpenNew}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md cursor-pointer shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Project</span>
@@ -153,17 +184,25 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
       )}
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {projects.map((p) => {
           const projId = p._id || p.id;
           return (
             <div
               key={projId}
-              className="p-5 rounded-2xl bg-neutral-900 border border-neutral-800 flex flex-col justify-between"
+              className="p-4 sm:p-5 rounded-2xl bg-neutral-900 border border-neutral-800 flex flex-col justify-between"
             >
               <div>
-                <div className="relative h-36 rounded-xl overflow-hidden mb-3 bg-neutral-950">
-                  <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
+                <div className="relative h-40 sm:h-36 rounded-xl overflow-hidden mb-3 bg-neutral-950">
+                  <img
+                    src={p.image || p.imageUrl || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop"}
+                    alt={p.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop";
+                    }}
+                  />
                   {p.featured && (
                     <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500 text-neutral-950 font-bold">
                       Featured Spotlight
@@ -203,7 +242,8 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                       href={p.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1 rounded text-neutral-400 hover:text-white"
+                      className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-850"
+                      title="Live Demo"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
@@ -213,18 +253,20 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                       href={p.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1 rounded text-neutral-400 hover:text-white"
+                      className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-850"
+                      title="Source Code"
                     >
                       <Github className="w-3.5 h-3.5" />
                     </a>
                   )}
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <button
                     type="button"
                     onClick={() => handleOpenEdit(p)}
                     className="p-1.5 rounded-lg text-neutral-400 hover:text-cyan-400 hover:bg-neutral-800 transition-colors cursor-pointer"
+                    title="Edit Project"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
@@ -232,6 +274,7 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                     type="button"
                     onClick={() => handleDelete(projId, p.title)}
                     className="p-1.5 rounded-lg text-neutral-400 hover:text-rose-400 hover:bg-neutral-800 transition-colors cursor-pointer"
+                    title="Delete Project"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -244,26 +287,29 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
 
       {/* Add / Edit Project Modal */}
       {isModalOpen && editingProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto"
+          onClick={() => setIsModalOpen(false)}
+        >
           <div
-            className="w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 rounded-3xl bg-neutral-900 border border-neutral-800 shadow-2xl my-8"
+            className="w-full max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 shadow-2xl my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-neutral-800">
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="text-base sm:text-lg font-bold text-white">
                 {(editingProject._id || editingProject.id) ? "Edit Project Case Study" : "Add New Project Case Study"}
               </h3>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="text-neutral-500 hover:text-white cursor-pointer"
+                className="p-1 rounded-lg text-neutral-500 hover:text-white hover:bg-neutral-800 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-mono text-neutral-300 mb-1">
                     Project Title *
@@ -312,7 +358,7 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-mono text-neutral-300 mb-1">
                     The Problem / Challenge
@@ -345,18 +391,57 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-neutral-300 mb-1">
-                  Preview Image URL
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-mono text-neutral-300">
+                    Preview Image URL
+                  </label>
+                  {(editingProject.image || editingProject.imageUrl) && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setEditingProject((prev) => ({ ...prev, image: "", imageUrl: "" }))
+                      }
+                      className="text-[11px] font-mono text-neutral-400 hover:text-rose-400 cursor-pointer transition-colors"
+                    >
+                      Clear image
+                    </button>
+                  )}
+                </div>
                 <input
                   type="url"
-                  value={editingProject.image || ""}
-                  onChange={(e) =>
-                    setEditingProject((prev) => ({ ...prev, image: e.target.value }))
-                  }
+                  value={editingProject.image || editingProject.imageUrl || ""}
+                  onChange={(e) => {
+                    const url = e.target.value;
+                    setEditingProject((prev) => ({ ...prev, image: url, imageUrl: url }));
+                  }}
                   placeholder="https://images.unsplash.com/..."
                   className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white focus:outline-hidden focus:ring-2 focus:ring-cyan-500/50"
                 />
+
+                {/* Instant visual preview */}
+                {(editingProject.image || editingProject.imageUrl) && (
+                  <div className="mt-2.5 p-2 rounded-xl bg-neutral-950 border border-neutral-800 flex items-center gap-3">
+                    <div className="w-16 h-12 rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800 shrink-0">
+                      <img
+                        src={editingProject.image || editingProject.imageUrl}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop";
+                        }}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-mono text-cyan-400 truncate">
+                        Preview active
+                      </p>
+                      <p className="text-[10px] text-neutral-400 truncate font-mono">
+                        {editingProject.image || editingProject.imageUrl}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Technologies Tags */}
@@ -381,7 +466,7 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                   <button
                     type="button"
                     onClick={handleAddTech}
-                    className="px-3 py-2 rounded-xl text-xs bg-neutral-800 text-white cursor-pointer"
+                    className="px-4 py-2 rounded-xl text-xs bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer transition-colors"
                   >
                     Add
                   </button>
@@ -427,7 +512,7 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                   <button
                     type="button"
                     onClick={handleAddFeature}
-                    className="px-3 py-2 rounded-xl text-xs bg-neutral-800 text-white cursor-pointer"
+                    className="px-4 py-2 rounded-xl text-xs bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer transition-colors"
                   >
                     Add
                   </button>
@@ -438,11 +523,11 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                       key={idx}
                       className="flex items-center justify-between p-2 rounded-lg bg-neutral-950 text-xs text-neutral-300"
                     >
-                      <span>• {feat}</span>
+                      <span className="truncate pr-2">• {feat}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveFeature(idx)}
-                        className="text-neutral-500 hover:text-rose-400 cursor-pointer"
+                        className="text-neutral-500 hover:text-rose-400 cursor-pointer shrink-0"
                       >
                         &times;
                       </button>
@@ -451,7 +536,7 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-mono text-neutral-300 mb-1">
                     Live Demo URL
@@ -498,11 +583,11 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                 </label>
               </div>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-neutral-800">
+              <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 border-t border-neutral-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-medium text-neutral-400 hover:text-white cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-medium text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer text-center"
                 >
                   Cancel
                 </button>
@@ -510,12 +595,12 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
                 >
                   {isSaving ? (
                     <>
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      <span>Saving to MySQL...</span>
+                      <span>Saving...</span>
                     </>
                   ) : (
                     <span>Save Project</span>

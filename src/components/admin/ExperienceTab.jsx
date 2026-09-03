@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { api } from "../../services/api.js";
 import {
@@ -111,9 +112,9 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Work Experience</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Work Experience</h1>
           <p className="text-xs font-mono text-neutral-400 mt-1">
             Manage your career history, achievements, responsibilities, and technologies in MySQL
           </p>
@@ -122,7 +123,7 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
         <button
           type="button"
           onClick={handleOpenNew}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md cursor-pointer shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Add Work Experience</span>
@@ -153,15 +154,15 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
           return (
             <div
               key={expId}
-              className="p-6 rounded-2xl bg-neutral-900 border border-neutral-800 flex flex-col sm:flex-row sm:items-start justify-between gap-4"
+              className="p-4 sm:p-6 rounded-2xl bg-neutral-900 border border-neutral-800 flex flex-col sm:flex-row sm:items-start justify-between gap-4"
             >
-              <div className="space-y-2">
-                <div className="flex flex-wrap items-center gap-2">
+              <div className="space-y-2 grow min-w-0">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                   <h3 className="text-base font-bold text-white">{exp.position}</h3>
                   <span className="text-sm font-semibold text-cyan-400">@ {exp.company}</span>
                 </div>
 
-                <div className="flex items-center gap-4 text-xs font-mono text-neutral-400">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs font-mono text-neutral-400">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5" />
                     {exp.startDate} – {exp.endDate}
@@ -183,7 +184,7 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
                 {exp.responsibilities && exp.responsibilities.length > 0 && (
                   <ul className="list-disc list-inside space-y-1 text-xs text-neutral-400 pt-1">
                     {exp.responsibilities.map((r, i) => (
-                      <li key={i}>{r}</li>
+                      <li key={i} className="leading-relaxed">{r}</li>
                     ))}
                   </ul>
                 )}
@@ -202,7 +203,7 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
                 )}
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-1.5 self-end sm:self-start shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-neutral-850 w-full sm:w-auto justify-end">
                 <button
                   type="button"
                   onClick={() => handleOpenEdit(exp)}
@@ -227,26 +228,29 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
 
       {/* Add / Edit Experience Modal */}
       {isModalOpen && editingExp && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto"
+          onClick={() => setIsModalOpen(false)}
+        >
           <div
-            className="w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 rounded-3xl bg-neutral-900 border border-neutral-800 shadow-2xl my-8"
+            className="w-full max-w-xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 shadow-2xl my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-neutral-800">
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="text-base sm:text-lg font-bold text-white">
                 {(editingExp._id || editingExp.id) ? "Edit Work Experience" : "Add Work Experience"}
               </h3>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="text-neutral-500 hover:text-white cursor-pointer"
+                className="p-1 rounded-lg text-neutral-500 hover:text-white hover:bg-neutral-800 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSave} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-mono text-neutral-300 mb-1">
                     Company Name *
@@ -280,7 +284,7 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-mono text-neutral-300 mb-1">
                     Start Date
@@ -364,7 +368,7 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
                   <button
                     type="button"
                     onClick={handleAddResp}
-                    className="px-3 py-2 rounded-xl text-xs bg-neutral-800 text-white cursor-pointer"
+                    className="px-4 py-2 rounded-xl text-xs bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer transition-colors"
                   >
                     Add
                   </button>
@@ -375,11 +379,11 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
                       key={idx}
                       className="flex items-center justify-between p-2 rounded-lg bg-neutral-950 text-xs text-neutral-300"
                     >
-                      <span>• {r}</span>
+                      <span className="truncate pr-2">• {r}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveResp(idx)}
-                        className="text-neutral-500 hover:text-rose-400 cursor-pointer"
+                        className="text-neutral-500 hover:text-rose-400 cursor-pointer shrink-0"
                       >
                         &times;
                       </button>
@@ -410,7 +414,7 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
                   <button
                     type="button"
                     onClick={handleAddTech}
-                    className="px-3 py-2 rounded-xl text-xs bg-neutral-800 text-white cursor-pointer"
+                    className="px-4 py-2 rounded-xl text-xs bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer transition-colors"
                   >
                     Add
                   </button>
@@ -434,11 +438,11 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
                 </div>
               </div>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-neutral-800">
+              <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 border-t border-neutral-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-medium text-neutral-400 hover:text-white cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-medium text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer text-center"
                 >
                   Cancel
                 </button>
@@ -446,12 +450,12 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
                 >
                   {isSaving ? (
                     <>
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      <span>Saving to MySQL...</span>
+                      <span>Saving...</span>
                     </>
                   ) : (
                     <span>Save Experience</span>
@@ -465,3 +469,4 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
     </div>
   );
 };
+

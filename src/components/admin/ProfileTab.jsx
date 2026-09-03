@@ -97,7 +97,7 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Profile &amp; Identity</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Profile &amp; Identity</h1>
           <p className="text-xs font-mono text-neutral-400 mt-1">
             Manage your personal branding, titles, philosophy, and contact details
           </p>
@@ -123,7 +123,7 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Core Personal Details */}
-        <div className="p-6 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
+        <div className="p-4 sm:p-6 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
           <h2 className="text-sm font-bold text-white border-b border-neutral-800 pb-2">
             1. Core Identity &amp; Hero Showcase
           </h2>
@@ -187,7 +187,7 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
               />
             </div>
 
-            <div className="flex items-center gap-3 pt-6">
+            <div className="flex items-center gap-3 pt-2 sm:pt-6">
               <input
                 type="checkbox"
                 id="availableForHire"
@@ -204,7 +204,7 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
         </div>
 
         {/* Narrative & Philosophy */}
-        <div className="p-6 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
+        <div className="p-4 sm:p-6 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
           <h2 className="text-sm font-bold text-white border-b border-neutral-800 pb-2">
             2. Professional Narrative &amp; Philosophy
           </h2>
@@ -258,7 +258,7 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
             <label className="block text-xs font-mono font-medium text-neutral-300 mb-1.5">
               Technical Focus Areas &amp; Interests
             </label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-2">
               <input
                 type="text"
                 value={interestInput}
@@ -270,12 +270,12 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
                   }
                 }}
                 placeholder="Add focus area (e.g. Distributed Database Indexes)"
-                className="grow px-4 py-2 rounded-xl bg-neutral-950 border border-neutral-800 text-xs text-white"
+                className="grow px-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-xs text-white"
               />
               <button
                 type="button"
                 onClick={handleAddInterest}
-                className="px-4 py-2 rounded-xl text-xs font-medium bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-medium bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer transition-colors"
               >
                 Add
               </button>
@@ -302,12 +302,12 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
         </div>
 
         {/* Contact & Socials */}
-        <div className="p-6 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
+        <div className="p-4 sm:p-6 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
           <h2 className="text-sm font-bold text-white border-b border-neutral-800 pb-2">
             3. Contact Details &amp; Social Links
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-mono font-medium text-neutral-300 mb-1.5">
                 Email
@@ -351,7 +351,7 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-mono font-medium text-neutral-300 mb-1.5">
                 GitHub URL
@@ -397,16 +397,16 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
         </div>
 
         {/* Save CTA */}
-        <div className="flex justify-end">
+        <div className="flex justify-end pt-2">
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-sm bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
           >
             {isSaving ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Persisting to MySQL...</span>
+                <span>Persisting...</span>
               </>
             ) : (
               <>

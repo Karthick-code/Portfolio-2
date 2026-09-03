@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { api } from "../../services/api.js";
 import {
@@ -76,9 +77,9 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Education &amp; Credentials</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Education &amp; Credentials</h1>
           <p className="text-xs font-mono text-neutral-400 mt-1">
             Manage academic degrees, certifications, and technical qualifications in MySQL
           </p>
@@ -87,7 +88,7 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
         <button
           type="button"
           onClick={handleOpenNew}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md cursor-pointer shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Add Education</span>
@@ -118,11 +119,11 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
           return (
             <div
               key={eduId}
-              className="p-6 rounded-2xl bg-neutral-900 border border-neutral-800 flex flex-col justify-between"
+              className="p-4 sm:p-6 rounded-2xl bg-neutral-900 border border-neutral-800 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-start justify-between gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-neutral-950 flex items-center justify-center text-cyan-400">
+                  <div className="w-10 h-10 rounded-xl bg-neutral-950 flex items-center justify-center text-cyan-400 shrink-0">
                     <GraduationCap className="w-5 h-5" />
                   </div>
                   <div className="flex items-center gap-1.5 text-xs font-mono text-neutral-400">
@@ -143,12 +144,13 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
               </div>
 
               <div className="pt-4 mt-4 border-t border-neutral-800 flex items-center justify-between">
-                <span className="text-xs text-neutral-500">{edu.location || "On Campus / Remote"}</span>
-                <div className="flex items-center gap-2">
+                <span className="text-xs text-neutral-500 truncate mr-2">{edu.location || "On Campus / Remote"}</span>
+                <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     type="button"
                     onClick={() => handleOpenEdit(edu)}
                     className="p-1.5 rounded-lg text-neutral-400 hover:text-cyan-400 hover:bg-neutral-800 transition-colors cursor-pointer"
+                    title="Edit Education"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
@@ -156,6 +158,7 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
                     type="button"
                     onClick={() => handleDelete(eduId, `${edu.degree} - ${edu.institution}`)}
                     className="p-1.5 rounded-lg text-neutral-400 hover:text-rose-400 hover:bg-neutral-800 transition-colors cursor-pointer"
+                    title="Delete Education"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -168,19 +171,22 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
 
       {/* Add / Edit Modal */}
       {isModalOpen && editingEdu && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto"
+          onClick={() => setIsModalOpen(false)}
+        >
           <div
-            className="w-full max-w-lg p-6 rounded-3xl bg-neutral-900 border border-neutral-800 shadow-2xl"
+            className="w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 shadow-2xl my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-neutral-800">
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="text-base sm:text-lg font-bold text-white">
                 {(editingEdu._id || editingEdu.id) ? "Edit Education Record" : "Add Education Record"}
               </h3>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="text-neutral-500 hover:text-white cursor-pointer"
+                className="p-1 rounded-lg text-neutral-500 hover:text-white hover:bg-neutral-800 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -203,7 +209,7 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-mono text-neutral-300 mb-1">
                     Degree / Certificate *
@@ -236,7 +242,7 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs font-mono text-neutral-300 mb-1">
                     Start Year
@@ -298,11 +304,11 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
                 />
               </div>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-neutral-800">
+              <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 border-t border-neutral-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-medium text-neutral-400 hover:text-white cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-medium text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer text-center"
                 >
                   Cancel
                 </button>
@@ -310,12 +316,12 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-medium bg-cyan-500 hover:bg-cyan-400 text-neutral-950 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
                 >
                   {isSaving ? (
                     <>
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      <span>Saving to MySQL...</span>
+                      <span>Saving...</span>
                     </>
                   ) : (
                     <span>Save Record</span>
@@ -329,3 +335,4 @@ export const EducationTab = ({ education = [], onEducationUpdated }) => {
     </div>
   );
 };
+

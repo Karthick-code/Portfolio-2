@@ -1,5 +1,7 @@
 import React from "react";
 import { X, Printer, Mail, Phone, MapPin, Globe } from "lucide-react";
+ import { Download } from "lucide-react";
+import html2pdf from "html2pdf.js";
 
 export const ResumeModal = ({
   isOpen,
@@ -14,6 +16,34 @@ export const ResumeModal = ({
   const handlePrint = () => {
     window.print();
   };
+ 
+// -- download option will be implemented in future 
+// const handleDownloadPDF = () => {
+//   const element = document.getElementById("resume");
+
+//   const options = {
+//     margin: 0,
+//     filename: "Resume.pdf",
+//     image: {
+//       type: "jpeg",
+//       quality: 0.98,
+//     },
+//     html2canvas: {
+//       scale: 2,
+//       useCORS: true,
+//     },
+//     jsPDF: {
+//       unit: "mm",
+//       format: "a4",
+//       orientation: "portrait",
+//     },
+//   };
+
+//   html2pdf()
+//     .set(options)
+//     .from(element)
+//     .save();
+// };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
@@ -35,8 +65,8 @@ export const ResumeModal = ({
               onClick={handlePrint}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition-colors cursor-pointer"
             >
-              <Printer className="w-3.5 h-3.5" />
-              <span>Print / Save as PDF</span>
+              <Download  className="w-3.5 h-3.5" />
+              <span>Save as PDF</span>
             </button>
 
             <button

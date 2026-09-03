@@ -14,21 +14,26 @@ export const Footer = ({ profile }) => {
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-neutral-900 dark:bg-white flex items-center justify-center text-white dark:text-neutral-950">
               <Code2 className="w-4 h-4" />
+              {/* <img
+                className="w-4 h-4"
+                src="https://res.cloudinary.com/dw94vpvkd/image/upload/v1788245790/portfolio-logo_qgrvgi.png"
+              /> */}
             </div>
             <div>
               <p className="font-mono font-bold text-sm text-neutral-900 dark:text-neutral-100">
                 {profile?.name || "[YOUR NAME]"}
               </p>
               <p className="text-xs text-neutral-500 font-mono">
-                Full Stack Web &amp; MySQL Architecture
+                {/* Full Stack Web &amp; MySQL Architecture */}
+                Developer
               </p>
             </div>
           </div>
 
           {/* Center Links / Notice */}
-          <div className="flex items-center gap-6 text-xs text-neutral-600 dark:text-neutral-400 font-mono">
+          {/* <div className="flex items-center gap-6 text-xs text-neutral-600 dark:text-neutral-400 font-mono">
             <span>Powered by MySQL • Express • React • Node</span>
-          </div>
+          </div> */}
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
@@ -45,7 +50,8 @@ export const Footer = ({ profile }) => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-neutral-100 dark:border-neutral-900 text-center text-xs text-neutral-500 font-mono">
-          &copy; {new Date().getFullYear()} {profile?.name || "[YOUR NAME]"}. Engineered with MySQL database &amp; dynamic background ecosystem.
+          &copy; {new Date().getFullYear()} {profile?.name }.
+          {/* Engineered with MySQL database &amp; dynamic background ecosystem. */}
         </div>
       </div>
     </footer>

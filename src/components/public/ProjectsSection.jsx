@@ -1,3 +1,5 @@
+
+
 import React, { useState, useMemo } from "react";
 import { ExternalLink, Github, Sparkles, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { ProjectModal } from "./ProjectModal.jsx";
@@ -85,9 +87,13 @@ export const ProjectsSection = ({ projects = [], isLoading = false }) => {
                 onClick={() => setSelectedProject(featuredProject)}
               >
                 <img
-                  src={featuredProject.imageUrl || featuredProject.image}
+                  src={featuredProject.imageUrl || featuredProject.image || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop"}
                   alt={featuredProject.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop";
+                  }}
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent lg:bg-linear-to-r lg:from-transparent lg:to-black/30" />
                 <div className="absolute top-4 left-4">
@@ -187,9 +193,13 @@ export const ProjectsSection = ({ projects = [], isLoading = false }) => {
                     onClick={() => setSelectedProject(project)}
                   >
                     <img
-                      src={project.imageUrl || project.image}
+                      src={project.imageUrl || project.image || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop"}
                       alt={project.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop";
+                      }}
                     />
                     <div className="absolute top-3 left-3">
                       <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-medium bg-black/60 text-white backdrop-blur-md">

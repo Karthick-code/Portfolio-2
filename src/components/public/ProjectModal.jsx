@@ -1,3 +1,4 @@
+
 import React from "react";
 import { X, ExternalLink, Github, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
 
@@ -21,9 +22,13 @@ export const ProjectModal = ({ project, onClose }) => {
         {/* Header banner image */}
         <div className="relative h-56 sm:h-72 w-full overflow-hidden rounded-t-2xl bg-neutral-950">
           <img
-            src={imageUrl}
+            src={imageUrl || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop"}
             alt={project.title}
             className="w-full h-full object-cover opacity-85"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop";
+            }}
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 

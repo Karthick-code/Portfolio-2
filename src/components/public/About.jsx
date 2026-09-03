@@ -93,7 +93,7 @@ export const About = ({ profile, onResumeClick }) => {
                 <div>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400">Location</p>
                   <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
-                    {profile?.location || "[YOUR LOCATION]"}
+                    {profile?.location }
                   </p>
                 </div>
                 <button

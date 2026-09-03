@@ -131,7 +131,7 @@ export const ContactSection = ({ profile }) => {
                     <span>LinkedIn</span>
                   </a>
                 )}
-                {profile?.website && (
+                {/* {profile?.website && (
                   <a
                     href={profile.website}
                     target="_blank"
@@ -141,7 +141,7 @@ export const ContactSection = ({ profile }) => {
                     <Globe className="w-4 h-4 text-emerald-500" />
                     <span>Website</span>
                   </a>
-                )}
+                )} */}
               </div>
             </div>
           </div>
@@ -257,7 +257,7 @@ export const ContactSection = ({ profile }) => {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Saving message to MySQL...</span>
+                      <span>Sending message...</span>
                     </>
                   ) : (
                     <>

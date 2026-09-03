@@ -110,11 +110,14 @@ export const SkillsSection = ({ skills = [], isLoading = false, onRefresh }) => 
                       </div>
                     </div>
 
-                    {skill.featured && (
+                    {skill.featured  ? (
                       <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800">
                         Core
                       </span>
-                    )}
+                    ):(<span className="px-2 py-0.5 rounded text-[10px] font-medium bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800">
+                        Basic
+                      </span>)
+                    }
                   </div>
 
                   {skill.description ? (
