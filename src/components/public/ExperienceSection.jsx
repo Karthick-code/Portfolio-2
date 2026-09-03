@@ -2,7 +2,7 @@ import React from "react";
 import { Calendar, MapPin, CheckCircle2 } from "lucide-react";
 
 export const ExperienceSection = ({ experience = [], isLoading = false }) => {
-  let endDate = ''
+  const endDate =exp.endDate === "Present"? `${new Date().toLocaleString("en-US", { month: "short" })}-${new Date().getFullYear()}`: exp.endDate
   return (
     <section id="experience" className="py-20 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +47,7 @@ export const ExperienceSection = ({ experience = [], isLoading = false }) => {
                         {exp.company}
                       </p>
                     </div>
-                    {endDate =exp.endDate === "Present"? `${new Date().toLocaleString("en-US", { month: "short" })}-${new Date().getFullYear()}`: exp.endDate}
+                    
                     <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-neutral-500 dark:text-neutral-400">
                       <span className="inline-flex items-center gap-1">
                         <Calendar className="w-3.5 h-3.5 text-neutral-400" />
