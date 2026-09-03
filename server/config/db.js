@@ -1,3 +1,5 @@
+
+
 // import mysql from "mysql2/promise";
 // import bcrypt from "bcryptjs";
 
@@ -295,8 +297,8 @@
 //     const updated = {
 //       _id: id,
 //       id,
-//       name: profileData.name || current?.name || "" ,
-//       title: profileData.title || current?.title || "Full Stack Engineer",
+//       name: profileData.name || current?.name || "[YOUR NAME]",
+//       title: profileData.title || current?.title || "Senior Full Stack Engineer",
 //       tagline: profileData.tagline ?? current?.tagline ?? "",
 //       bio: profileData.bio ?? current?.bio ?? "",
 //       philosophy: profileData.philosophy ?? current?.philosophy ?? "",
@@ -463,25 +465,50 @@
 //   async getProjects() {
 //     if (isUsingRealMysql && pool) {
 //       const [rows] = await pool.query("SELECT * FROM projects ORDER BY order_num ASC, created_at DESC");
-//       return rows.map((r) => ({
-//         _id: r.id,
-//         id: r.id,
-//         title: r.title,
-//         slug: r.slug,
-//         description: r.description,
-//         fullDescription: r.full_description,
-//         technologies: parseJSON(r.technologies, []),
-//         liveUrl: r.live_url,
-//         githubUrl: r.github_url,
-//         imageUrl: r.image_url,
-//         featured: Boolean(r.featured),
-//         order: r.order_num,
-//         challenges: parseJSON(r.challenges, []),
-//         solutions: parseJSON(r.solutions, []),
-//         createdAt: r.created_at,
-//       }));
+//       return rows.map((r) => {
+//         const challenges = parseJSON(r.challenges, []);
+//         const solutions = parseJSON(r.solutions, []);
+//         const img = r.image_url || "";
+//         return {
+//           _id: r.id,
+//           id: r.id,
+//           title: r.title,
+//           slug: r.slug,
+//           description: r.description,
+//           fullDescription: r.full_description,
+//           technologies: parseJSON(r.technologies, []),
+//           liveUrl: r.live_url,
+//           githubUrl: r.github_url,
+//           imageUrl: img,
+//           image: img,
+//           featured: Boolean(r.featured),
+//           order: r.order_num,
+//           challenges,
+//           solutions,
+//           features: solutions,
+//           problem: challenges.length > 0 ? challenges.join("\n\n") : "",
+//           solution: solutions.length > 0 ? solutions.join("\n\n") : "",
+//           category: r.category || "Full Stack",
+//           createdAt: r.created_at,
+//         };
+//       });
 //     }
-//     return [...memoryStore.projects].sort((a, b) => (a.order || 0) - (b.order || 0));
+//     return [...memoryStore.projects].map((p) => {
+//       const img = p.imageUrl || p.image || "";
+//       const challenges = Array.isArray(p.challenges) ? p.challenges : (p.problem ? [p.problem] : []);
+//       const solutions = Array.isArray(p.solutions) ? p.solutions : (Array.isArray(p.features) ? p.features : (p.solution ? [p.solution] : []));
+//       return {
+//         ...p,
+//         imageUrl: img,
+//         image: img,
+//         challenges,
+//         solutions,
+//         features: solutions,
+//         problem: p.problem || (challenges.length > 0 ? challenges.join("\n\n") : ""),
+//         solution: p.solution || (solutions.length > 0 ? solutions.join("\n\n") : ""),
+//         category: p.category || "Full Stack",
+//       };
+//     }).sort((a, b) => (a.order || 0) - (b.order || 0));
 //   },
 
 //   async getProjectBySlug(slug) {
@@ -489,6 +516,9 @@
 //       const [rows] = await pool.query("SELECT * FROM projects WHERE slug = ? LIMIT 1", [slug]);
 //       if (rows.length === 0) return null;
 //       const r = rows[0];
+//       const challenges = parseJSON(r.challenges, []);
+//       const solutions = parseJSON(r.solutions, []);
+//       const img = r.image_url || "";
 //       return {
 //         _id: r.id,
 //         id: r.id,
@@ -499,20 +529,44 @@
 //         technologies: parseJSON(r.technologies, []),
 //         liveUrl: r.live_url,
 //         githubUrl: r.github_url,
-//         imageUrl: r.image_url,
+//         imageUrl: img,
+//         image: img,
 //         featured: Boolean(r.featured),
 //         order: r.order_num,
-//         challenges: parseJSON(r.challenges, []),
-//         solutions: parseJSON(r.solutions, []),
+//         challenges,
+//         solutions,
+//         features: solutions,
+//         problem: challenges.length > 0 ? challenges.join("\n\n") : "",
+//         solution: solutions.length > 0 ? solutions.join("\n\n") : "",
+//         category: r.category || "Full Stack",
 //         createdAt: r.created_at,
 //       };
 //     }
-//     return memoryStore.projects.find((p) => p.slug === slug) || null;
+//     const p = memoryStore.projects.find((pr) => pr.slug === slug);
+//     if (!p) return null;
+//     const img = p.imageUrl || p.image || "";
+//     const challenges = Array.isArray(p.challenges) ? p.challenges : (p.problem ? [p.problem] : []);
+//     const solutions = Array.isArray(p.solutions) ? p.solutions : (Array.isArray(p.features) ? p.features : (p.solution ? [p.solution] : []));
+//     return {
+//       ...p,
+//       imageUrl: img,
+//       image: img,
+//       challenges,
+//       solutions,
+//       features: solutions,
+//       problem: p.problem || (challenges.length > 0 ? challenges.join("\n\n") : ""),
+//       solution: p.solution || (solutions.length > 0 ? solutions.join("\n\n") : ""),
+//       category: p.category || "Full Stack",
+//     };
 //   },
 
 //   async createProject(data) {
 //     const id = generateId();
 //     const slug = data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+//     const img = data.imageUrl || data.image || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80";
+//     const challenges = Array.isArray(data.challenges) ? data.challenges : (data.problem ? [data.problem] : []);
+//     const solutions = Array.isArray(data.solutions) ? data.solutions : (Array.isArray(data.features) ? data.features : (data.solution ? [data.solution] : []));
+
 //     const project = {
 //       _id: id,
 //       id,
@@ -523,11 +577,16 @@
 //       technologies: data.technologies || [],
 //       liveUrl: data.liveUrl || "",
 //       githubUrl: data.githubUrl || "",
-//       imageUrl: data.imageUrl || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+//       imageUrl: img,
+//       image: img,
 //       featured: data.featured ?? false,
 //       order: data.order ?? memoryStore.projects.length + 1,
-//       challenges: data.challenges || [],
-//       solutions: data.solutions || [],
+//       challenges,
+//       solutions,
+//       features: solutions,
+//       problem: challenges.length > 0 ? challenges.join("\n\n") : "",
+//       solution: solutions.length > 0 ? solutions.join("\n\n") : "",
+//       category: data.category || "Full Stack",
 //       createdAt: new Date().toISOString(),
 //     };
 
@@ -560,7 +619,41 @@
 //   async updateProject(id, data) {
 //     const index = memoryStore.projects.findIndex((p) => p._id === id || p.id === id);
 //     const existing = index !== -1 ? memoryStore.projects[index] : {};
-//     const updated = { ...existing, ...data, _id: id, id, updatedAt: new Date().toISOString() };
+
+//     // Carefully determine target image URL
+//     let targetImg = undefined;
+//     if (data.image !== undefined && data.imageUrl !== undefined) {
+//       targetImg = data.image !== "" ? data.image : data.imageUrl;
+//     } else if (data.image !== undefined) {
+//       targetImg = data.image;
+//     } else if (data.imageUrl !== undefined) {
+//       targetImg = data.imageUrl;
+//     } else {
+//       targetImg = existing.image || existing.imageUrl;
+//     }
+
+//     const challenges = data.challenges !== undefined
+//       ? data.challenges
+//       : (data.problem !== undefined ? (data.problem ? [data.problem] : []) : existing.challenges);
+
+//     const solutions = data.solutions !== undefined
+//       ? data.solutions
+//       : (data.features !== undefined ? data.features : (data.solution !== undefined ? (data.solution ? [data.solution] : []) : existing.solutions));
+
+//     const updated = {
+//       ...existing,
+//       ...data,
+//       imageUrl: targetImg !== undefined ? targetImg : (existing.imageUrl || existing.image || ""),
+//       image: targetImg !== undefined ? targetImg : (existing.image || existing.imageUrl || ""),
+//       challenges: challenges || [],
+//       solutions: solutions || [],
+//       features: solutions || [],
+//       problem: challenges && challenges.length > 0 ? challenges.join("\n\n") : (data.problem || existing.problem || ""),
+//       solution: solutions && solutions.length > 0 ? solutions.join("\n\n") : (data.solution || existing.solution || ""),
+//       _id: id,
+//       id,
+//       updatedAt: new Date().toISOString(),
+//     };
 
 //     if (isUsingRealMysql && pool) {
 //       await pool.query(
@@ -572,7 +665,7 @@
 //          technologies = COALESCE(?, technologies),
 //          live_url = COALESCE(?, live_url),
 //          github_url = COALESCE(?, github_url),
-//          image_url = COALESCE(?, image_url),
+//          image_url = ?,
 //          featured = COALESCE(?, featured),
 //          order_num = COALESCE(?, order_num),
 //          challenges = COALESCE(?, challenges),
@@ -580,18 +673,18 @@
 //          updated_at = NOW()
 //          WHERE id = ?`,
 //         [
-//           data.title,
-//           data.slug,
-//           data.description,
-//           data.fullDescription,
-//           data.technologies ? JSON.stringify(data.technologies) : null,
-//           data.liveUrl,
-//           data.githubUrl,
-//           data.imageUrl ||data.image,
+//           data.title !== undefined ? data.title : null,
+//           data.slug !== undefined ? data.slug : null,
+//           data.description !== undefined ? data.description : null,
+//           data.fullDescription !== undefined ? data.fullDescription : null,
+//           data.technologies !== undefined ? JSON.stringify(data.technologies) : null,
+//           data.liveUrl !== undefined ? data.liveUrl : null,
+//           data.githubUrl !== undefined ? data.githubUrl : null,
+//           targetImg !== undefined ? targetImg : (existing.image_url || existing.imageUrl || existing.image || null),
 //           data.featured !== undefined ? (data.featured ? 1 : 0) : null,
-//           data.order,
-//           data.challenges ? JSON.stringify(data.challenges) : null,
-//           data.solutions ? JSON.stringify(data.solutions) : null,
+//           data.order !== undefined ? data.order : null,
+//           challenges !== undefined ? JSON.stringify(challenges) : null,
+//           solutions !== undefined ? JSON.stringify(solutions) : null,
 //           id,
 //         ]
 //       );
@@ -890,7 +983,6 @@
 //     };
 //   },
 // };
-
 import mysql from "mysql2/promise";
 import bcrypt from "bcryptjs";
 
@@ -999,6 +1091,7 @@ const initTables = async (connection) => {
       order_num INT DEFAULT 0,
       challenges JSON,
       solutions JSON,
+      catgry VARCHAR(100) DEFAULT 'Full Stack',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`,
@@ -1046,6 +1139,17 @@ const initTables = async (connection) => {
 
   for (const sql of tableDefinitions) {
     await connection.query(sql);
+  }
+
+  // Ensure catgry column exists on projects table for existing tables
+  try {
+    const [cols] = await connection.query("SHOW COLUMNS FROM projects LIKE 'catgry'");
+    if (cols.length === 0) {
+      await connection.query("ALTER TABLE projects ADD COLUMN catgry VARCHAR(100) DEFAULT 'Full Stack'");
+      console.log("[MySQL] Added catgry column to projects table");
+    }
+  } catch (colErr) {
+    console.warn("[MySQL] Column catgry migration notice:", colErr.message);
   }
 };
 
@@ -1360,6 +1464,7 @@ export const db = {
         const challenges = parseJSON(r.challenges, []);
         const solutions = parseJSON(r.solutions, []);
         const img = r.image_url || "";
+        const projCatgry = r.catgry !== undefined && r.catgry !== null ? r.catgry : (r.category || "Full Stack");
         return {
           _id: r.id,
           id: r.id,
@@ -1379,7 +1484,8 @@ export const db = {
           features: solutions,
           problem: challenges.length > 0 ? challenges.join("\n\n") : "",
           solution: solutions.length > 0 ? solutions.join("\n\n") : "",
-          category: r.category || "Full Stack",
+          catgry: projCatgry,
+          category: projCatgry,
           createdAt: r.created_at,
         };
       });
@@ -1388,6 +1494,7 @@ export const db = {
       const img = p.imageUrl || p.image || "";
       const challenges = Array.isArray(p.challenges) ? p.challenges : (p.problem ? [p.problem] : []);
       const solutions = Array.isArray(p.solutions) ? p.solutions : (Array.isArray(p.features) ? p.features : (p.solution ? [p.solution] : []));
+      const projCatgry = p.catgry !== undefined && p.catgry !== null ? p.catgry : (p.category || "Full Stack");
       return {
         ...p,
         imageUrl: img,
@@ -1397,7 +1504,8 @@ export const db = {
         features: solutions,
         problem: p.problem || (challenges.length > 0 ? challenges.join("\n\n") : ""),
         solution: p.solution || (solutions.length > 0 ? solutions.join("\n\n") : ""),
-        category: p.category || "Full Stack",
+        catgry: projCatgry,
+        category: projCatgry,
       };
     }).sort((a, b) => (a.order || 0) - (b.order || 0));
   },
@@ -1410,6 +1518,7 @@ export const db = {
       const challenges = parseJSON(r.challenges, []);
       const solutions = parseJSON(r.solutions, []);
       const img = r.image_url || "";
+      const projCatgry = r.catgry !== undefined && r.catgry !== null ? r.catgry : (r.category || "Full Stack");
       return {
         _id: r.id,
         id: r.id,
@@ -1429,7 +1538,8 @@ export const db = {
         features: solutions,
         problem: challenges.length > 0 ? challenges.join("\n\n") : "",
         solution: solutions.length > 0 ? solutions.join("\n\n") : "",
-        category: r.category || "Full Stack",
+        catgry: projCatgry,
+        category: projCatgry,
         createdAt: r.created_at,
       };
     }
@@ -1438,6 +1548,7 @@ export const db = {
     const img = p.imageUrl || p.image || "";
     const challenges = Array.isArray(p.challenges) ? p.challenges : (p.problem ? [p.problem] : []);
     const solutions = Array.isArray(p.solutions) ? p.solutions : (Array.isArray(p.features) ? p.features : (p.solution ? [p.solution] : []));
+    const projCatgry = p.catgry !== undefined && p.catgry !== null ? p.catgry : (p.category || "Full Stack");
     return {
       ...p,
       imageUrl: img,
@@ -1447,7 +1558,8 @@ export const db = {
       features: solutions,
       problem: p.problem || (challenges.length > 0 ? challenges.join("\n\n") : ""),
       solution: p.solution || (solutions.length > 0 ? solutions.join("\n\n") : ""),
-      category: p.category || "Full Stack",
+      catgry: projCatgry,
+      category: projCatgry,
     };
   },
 
@@ -1457,6 +1569,8 @@ export const db = {
     const img = data.imageUrl || data.image || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80";
     const challenges = Array.isArray(data.challenges) ? data.challenges : (data.problem ? [data.problem] : []);
     const solutions = Array.isArray(data.solutions) ? data.solutions : (Array.isArray(data.features) ? data.features : (data.solution ? [data.solution] : []));
+    const rawCatgry = data.catgry !== undefined ? data.catgry : (data.category !== undefined ? data.category : "Full Stack");
+    const projCatgry = typeof rawCatgry === "string" ? rawCatgry.trim() : (rawCatgry || "Full Stack");
 
     const project = {
       _id: id,
@@ -1477,14 +1591,15 @@ export const db = {
       features: solutions,
       problem: challenges.length > 0 ? challenges.join("\n\n") : "",
       solution: solutions.length > 0 ? solutions.join("\n\n") : "",
-      category: data.category || "Full Stack",
+      catgry: projCatgry,
+      category: projCatgry,
       createdAt: new Date().toISOString(),
     };
 
     if (isUsingRealMysql && pool) {
       await pool.query(
-        `INSERT INTO projects (id, title, slug, description, full_description, technologies, live_url, github_url, image_url, featured, order_num, challenges, solutions, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+        `INSERT INTO projects (id, title, slug, description, full_description, technologies, live_url, github_url, image_url, featured, order_num, challenges, solutions, catgry, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
         [
           project.id,
           project.title,
@@ -1499,6 +1614,7 @@ export const db = {
           project.order,
           JSON.stringify(project.challenges),
           JSON.stringify(project.solutions),
+          project.catgry,
         ]
       );
     }
@@ -1523,6 +1639,14 @@ export const db = {
       targetImg = existing.image || existing.imageUrl;
     }
 
+    // Determine target category / catgry based on user input
+    let targetCatgry = undefined;
+    if (data.catgry !== undefined) {
+      targetCatgry = typeof data.catgry === "string" ? data.catgry.trim() : data.catgry;
+    } else if (data.category !== undefined) {
+      targetCatgry = typeof data.category === "string" ? data.category.trim() : data.category;
+    }
+
     const challenges = data.challenges !== undefined
       ? data.challenges
       : (data.problem !== undefined ? (data.problem ? [data.problem] : []) : existing.challenges);
@@ -1530,6 +1654,10 @@ export const db = {
     const solutions = data.solutions !== undefined
       ? data.solutions
       : (data.features !== undefined ? data.features : (data.solution !== undefined ? (data.solution ? [data.solution] : []) : existing.solutions));
+
+    const resolvedCatgry = targetCatgry !== undefined
+      ? targetCatgry
+      : (existing.catgry !== undefined ? existing.catgry : (existing.category || "Full Stack"));
 
     const updated = {
       ...existing,
@@ -1541,6 +1669,8 @@ export const db = {
       features: solutions || [],
       problem: challenges && challenges.length > 0 ? challenges.join("\n\n") : (data.problem || existing.problem || ""),
       solution: solutions && solutions.length > 0 ? solutions.join("\n\n") : (data.solution || existing.solution || ""),
+      catgry: resolvedCatgry,
+      category: resolvedCatgry,
       _id: id,
       id,
       updatedAt: new Date().toISOString(),
@@ -1561,6 +1691,7 @@ export const db = {
          order_num = COALESCE(?, order_num),
          challenges = COALESCE(?, challenges),
          solutions = COALESCE(?, solutions),
+         catgry = ?,
          updated_at = NOW()
          WHERE id = ?`,
         [
@@ -1576,6 +1707,7 @@ export const db = {
           data.order !== undefined ? data.order : null,
           challenges !== undefined ? JSON.stringify(challenges) : null,
           solutions !== undefined ? JSON.stringify(solutions) : null,
+          targetCatgry !== undefined ? targetCatgry : (existing.catgry || existing.category || null),
           id,
         ]
       );
@@ -1874,3 +2006,4 @@ export const db = {
     };
   },
 };
+
