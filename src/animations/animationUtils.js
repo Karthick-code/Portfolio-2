@@ -305,9 +305,10 @@ export function generateFloatingParticles(skills, viewportWidth) {
 
       floatType,
 
-      showLabel:
-        size !== "sm" &&
-        (r3 > 0.35 || viewportWidth >= 1024),
+      // showLabel:
+      //   size !== "sm" &&
+      //   (r3 > 0.35 || viewportWidth >= 1024),
+      showLabel: viewportWidth >= 640,
     };
   });
 }
