@@ -75,10 +75,10 @@ export const Navbar = ({ profile, onResumeClick }) => {
           }}
           className="flex items-center gap-2.5 group focus:outline-hidden"
         >
-          <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform">
+          {/* <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform"> */}
             {/* <Code2 className="w-5 h-5" /> */}
             {/*  */}
-          {/* <div className="w-full h-full object-contain">  */}
+          <div className="w-full h-full object-contain"> 
             <img className = "w-5 h-5" src = 'https://res.cloudinary.com/dw94vpvkd/image/upload/v1788245790/portfolio-logo_qgrvgi.png'/>
 
           </div>
