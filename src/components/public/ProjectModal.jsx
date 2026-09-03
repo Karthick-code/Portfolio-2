@@ -45,7 +45,7 @@ export const ProjectModal = ({ project, onClose }) => {
           {/* Title on Image */}
           <div className="absolute bottom-4 left-6 right-6">
             <span className="px-2.5 py-1 rounded text-xs font-mono font-medium bg-cyan-600/80 text-white backdrop-blur-md mb-2 inline-block">
-              {project.category || "Full Stack"}
+              {project.catgry || project.category || "Full Stack"}
             </span>
             <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               {project.title}

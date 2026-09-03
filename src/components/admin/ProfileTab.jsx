@@ -406,7 +406,7 @@ export const ProfileTab = ({ profile, onProfileUpdated }) => {
             {isSaving ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Persisting...</span>
+                <span>Saving...</span>
               </>
             ) : (
               <>

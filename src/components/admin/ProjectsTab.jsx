@@ -33,7 +33,8 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
       imageUrl: defaultImg,
       technologies: ["React", "Node.js", "Express", "MySQL"],
       features: ["Decoupled microservices", "Optimized schema indices"],
-      category: "Full Stack",
+      catgry: "",
+      category: "",
       featured: false,
       liveUrl: "",
       githubUrl: "",
@@ -49,6 +50,7 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
     const feats = Array.isArray(project.features) && project.features.length > 0
       ? project.features
       : (Array.isArray(project.solutions) ? project.solutions : []);
+    const projCatgry = project.catgry !== undefined ? project.catgry : (project.category || "");
 
     setEditingProject({
       ...project,
@@ -57,6 +59,8 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
       problem: prob,
       solution: sol,
       features: feats,
+      catgry: projCatgry,
+      category: projCatgry,
     });
     setIsModalOpen(true);
     setFeedback({ type: null, msg: "" });
@@ -114,10 +118,14 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
     try {
       const projId = editingProject._id || editingProject.id;
       const targetImg = (editingProject.image || editingProject.imageUrl || "").trim();
+      const rawCatgry = editingProject.catgry !== undefined ? editingProject.catgry : (editingProject.category !== undefined ? editingProject.category : "");
+      const targetCatgry = typeof rawCatgry === "string" ? rawCatgry.trim() : (rawCatgry || "");
       const payload = {
         ...editingProject,
         image: targetImg,
         imageUrl: targetImg,
+        catgry: targetCatgry,
+        category: targetCatgry,
         challenges: editingProject.problem
           ? [editingProject.problem]
           : (editingProject.challenges || []),
@@ -211,7 +219,9 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
                 </div>
 
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[11px] font-mono text-cyan-400">{p.category}</span>
+                  <span className="text-[11px] font-mono text-cyan-400">
+                    {p.catgry || p.category || "Uncategorized"}
+                  </span>
                 </div>
                 <h3 className="text-base font-bold text-white mb-2">{p.title}</h3>
                 <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed mb-3">
@@ -328,17 +338,37 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
 
                 <div>
                   <label className="block text-xs font-mono text-neutral-300 mb-1">
-                    Category
+                    Category (catgry)
                   </label>
                   <input
                     type="text"
-                    value={editingProject.category || "Full Stack"}
-                    onChange={(e) =>
-                      setEditingProject((prev) => ({ ...prev, category: e.target.value }))
-                    }
-                    placeholder="Full Stack / Cloud / Systems"
+                    name="catgry"
+                    value={editingProject.catgry !== undefined ? editingProject.catgry : (editingProject.category || "")}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setEditingProject((prev) => ({ ...prev, catgry: val, category: val }));
+                    }}
+                    placeholder="Enter category (e.g. Full Stack, Backend, Frontend...)"
                     className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-sm text-white focus:outline-hidden focus:ring-2 focus:ring-cyan-500/50"
                   />
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {["Full Stack", "Frontend", "Backend", "Mobile", "DevOps & Cloud", "AI / ML"].map((chip) => (
+                      <button
+                        key={chip}
+                        type="button"
+                        onClick={() =>
+                          setEditingProject((prev) => ({ ...prev, catgry: chip, category: chip }))
+                        }
+                        className={`text-[10px] font-mono px-2 py-0.5 rounded cursor-pointer transition-colors ${
+                          (editingProject.catgry || editingProject.category) === chip
+                            ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
+                            : "bg-neutral-900 text-neutral-400 hover:text-neutral-200 border border-neutral-800"
+                        }`}
+                      >
+                        {chip}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -614,3 +644,4 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
     </div>
   );
 };
+

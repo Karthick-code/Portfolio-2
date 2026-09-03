@@ -9,13 +9,13 @@ export const ProjectsSection = ({ projects = [], isLoading = false }) => {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = useMemo(() => {
-    const cats = Array.from(new Set(projects.map((p) => p.category || "Full Stack").filter(Boolean)));
+    const cats = Array.from(new Set(projects.map((p) => p.catgry || p.category || "Full Stack").filter(Boolean)));
     return ["All", ...cats];
   }, [projects]);
 
   const filteredProjects = useMemo(() => {
     if (activeCategory === "All") return projects;
-    return projects.filter((p) => (p.category || "Full Stack") === activeCategory);
+    return projects.filter((p) => (p.catgry || p.category || "Full Stack") === activeCategory);
   }, [projects, activeCategory]);
 
   const featuredProject = useMemo(() => {
@@ -109,7 +109,7 @@ export const ProjectsSection = ({ projects = [], isLoading = false }) => {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs font-mono uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
-                      {featuredProject.category || "Full Stack"}
+                      {featuredProject.catgry || featuredProject.category || "Full Stack"}
                     </span>
                   </div>
 
@@ -203,7 +203,7 @@ export const ProjectsSection = ({ projects = [], isLoading = false }) => {
                     />
                     <div className="absolute top-3 left-3">
                       <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-medium bg-black/60 text-white backdrop-blur-md">
-                        {project.category || "Full Stack"}
+                        {project.catgry || project.category || "Full Stack"}
                       </span>
                     </div>
                   </div>
@@ -287,3 +287,4 @@ export const ProjectsSection = ({ projects = [], isLoading = false }) => {
     </section>
   );
 };
+
