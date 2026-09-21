@@ -43,7 +43,7 @@ export const ContactSection = ({ profile }) => {
       await api.sendContactMessage(formData);
       setStatus({
         type: "success",
-        message: "Thank you! Your message has been sent. I will get back to you Regarding the request.",
+        message: "Thank you! Your message has been Recieved. I will get back to you Regarding the request.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (err) {
