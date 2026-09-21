@@ -113,15 +113,15 @@ const sendSlackNotification = async (contact) => {
         fields: [
           {
             type: "mrkdwn",
-            text: `*Name:*\n${contact.name}`,
+            text: `*Name:*${contact.name}`,
           },
           {
             type: "mrkdwn",
-            text: `*Email:*\n${contact.email}`,
+            text: `*Email:*${contact.email}`,
           },
           {
             type: "mrkdwn",
-            text: `*Subject:*\n${contact.subject || "Portfolio Inquiry"}`,
+            text: `*Subject:*${contact.subject || "Portfolio Inquiry"}`,
           },
         ],
       },
@@ -129,7 +129,7 @@ const sendSlackNotification = async (contact) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*Message:*\n${contact.message}`,
+          text: `*Message:*${contact.message}`,
         },
       },
     ],
