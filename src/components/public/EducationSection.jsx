@@ -67,15 +67,15 @@ export const EducationSection = ({ education = [], isLoading = false }) => {
                       </div>
 
                       <div className="flex items-center gap-2 flex-wrap justify-end">
-                        <span
+                        {/* <span
                           className={`text-[10px] font-mono font-medium px-2 py-0.5 rounded-md ${
                             isCertificate
                               ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20"
                               : "bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-500/20"
                           }`}
                         >
-                          {/* {isCertificate ? "Certificate" : "Education"} */}
-                        </span>
+                          {isCertificate ? "Certificate" : "Education"}
+                        </span> */}
                         <div className="flex items-center gap-1.5 text-xs font-mono text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800/80 px-2.5 py-1 rounded-full">
                           <Calendar className="w-3 h-3" />
                           <span>{displayDate}</span>

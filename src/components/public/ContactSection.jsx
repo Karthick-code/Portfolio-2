@@ -43,7 +43,7 @@ export const ContactSection = ({ profile }) => {
       await api.sendContactMessage(formData);
       setStatus({
         type: "success",
-        message: "Thank you! Your message has been sent directly to the database. I will get back to you promptly.",
+        message: "Thank you! Your message has been sent. I will get back to you Regarding the request.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (err) {
@@ -82,10 +82,10 @@ export const ContactSection = ({ profile }) => {
                 <div>
                   <p className="text-xs font-mono text-neutral-500 dark:text-neutral-400">Direct Email</p>
                   <a
-                    href={`mailto:${profile?.email || "developer@portfolio.local"}`}
+                    href={`mailto:${profile?.email}`}
                     className="text-sm font-medium text-neutral-900 dark:text-neutral-100 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
                   >
-                    {profile?.email || "developer@portfolio.local"}
+                    {profile?.email}
                   </a>
                 </div>
               </div>
