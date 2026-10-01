@@ -133,10 +133,11 @@ const AppContent = () => {
   const navigateToPublic = useCallback(() => {
     // Clear admin hash and search
     if (window.location.hash.startsWith("#admin") || window.location.hash.startsWith("#creator") || window.location.hash.startsWith("#portal")) {
-      window.location.hash = "";
+      // window.location.hash = "";
+       window.history.replaceState( null, "",window.location.pathname + window.location.search );
     }
     if (window.location.pathname.startsWith("/admin") || window.location.pathname.startsWith("/creator") || window.location.pathname.startsWith("/portal")) {
-      window.history.pushState(null, "", "/");
+      window.history.replaceState(null, "", "/");
     }
     setCurrentView("public");
   }, []);
