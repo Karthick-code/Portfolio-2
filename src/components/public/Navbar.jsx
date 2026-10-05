@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  FileText,
-  Menu,
-  X,
-  Code2,
-  Sun,
-  Moon,
-} from "lucide-react";
+import { FileText, Menu, X, Code2, Sun, Moon } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle.jsx";
 import { useTheme } from "../../context/ThemeContext.jsx";
 
@@ -20,7 +13,15 @@ export const Navbar = ({ profile, onResumeClick }) => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ["hero", "about", "skills", "projects", "experience", "education", "contact"];
+      const sections = [
+        "hero",
+        "about",
+        "skills",
+        "projects",
+        "experience",
+        "education",
+        "contact",
+      ];
       const scrollPosition = window.scrollY + 200;
 
       for (const section of sections) {
@@ -76,11 +77,16 @@ export const Navbar = ({ profile, onResumeClick }) => {
           className="flex items-center gap-2.5 group focus:outline-hidden"
         >
           <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform">
-             <Code2 className="w-5 h-5" />
+            {/* <Code2 className="w-5 h-5" /> */}
+            <img
+              src="https://res.cloudinary.com/dw94vpvkd/image/upload/v1791183236/portfolio-logo_new_i3gntr.png"
+              alt="Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           <div className="flex flex-col">
             <span className="font-mono font-bold text-sm tracking-tight text-neutral-900 dark:text-neutral-100">
-              {profile?.name }
+              {profile?.name}
             </span>
             <span className="text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
               Software Engineer
@@ -134,7 +140,11 @@ export const Navbar = ({ profile, onResumeClick }) => {
             className="md:hidden p-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors focus:outline-hidden ml-1"
             aria-label="Open Navigation Menu"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
       </div>
@@ -174,7 +184,9 @@ export const Navbar = ({ profile, onResumeClick }) => {
                   ) : (
                     <Moon className="w-4 h-4 text-cyan-600" />
                   )}
-                  <span>Switch to {theme === "dark" ? "Light" : "Dark"} Mode</span>
+                  <span>
+                    Switch to {theme === "dark" ? "Light" : "Dark"} Mode
+                  </span>
                 </span>
                 <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
                   {theme}
