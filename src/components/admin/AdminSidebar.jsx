@@ -72,7 +72,7 @@ export const AdminSidebar = ({
             </div>
             <div>
               <h2 className="text-sm font-bold text-white tracking-tight">Portfolio CMS</h2>
-              <p className="text-[11px] font-mono text-cyan-400">MySQL Admin</p>
+              <p className="text-[11px] font-mono text-cyan-400">Admin Dashboard</p>
             </div>
           </div>
           {isMobile && (

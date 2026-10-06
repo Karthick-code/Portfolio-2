@@ -140,7 +140,7 @@ export const SkillsTab = ({ skills = [], onSkillsUpdated }) => {
       <div className="p-4 sm:p-6 rounded-2xl bg-neutral-900 border border-neutral-800">
         {skills.length === 0 ? (
           <div className="py-12 text-center text-neutral-500 text-xs font-mono">
-            No skills recorded in MySQL. Click &quot;Add New Technology&quot; to begin.
+            No skills recorded in Database. Click &quot;Add New Technology&quot; to begin.
           </div>
         ) : (
           <>

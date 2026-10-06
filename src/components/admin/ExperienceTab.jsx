@@ -116,7 +116,7 @@ export const ExperienceTab = ({ experience = [], onExperienceUpdated }) => {
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Work Experience</h1>
           <p className="text-xs font-mono text-neutral-400 mt-1">
-            Manage your career history, achievements, responsibilities, and technologies in MySQL
+            Manage your career history, achievements, responsibilities, and technologies 
           </p>
         </div>
 

@@ -354,7 +354,7 @@ export const ProjectsTab = ({ projects = [], onProjectsUpdated }) => {
 
           <p className="text-xs font-mono text-neutral-400 mt-1">
             Manage projects showcase, technical architectures, and
-            spotlight features in MySQL
+            spotlight features
           </p>
         </div>
 

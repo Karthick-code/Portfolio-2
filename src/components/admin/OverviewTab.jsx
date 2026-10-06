@@ -64,7 +64,7 @@ export const OverviewTab = ({
             Portfolio Administration Overview
           </h1>
           <p className="text-xs font-mono text-neutral-400 mt-1">
-            Real-time state connected directly to MySQL database
+            Real-time state connected directly database
           </p>
         </div>
 
@@ -112,7 +112,7 @@ export const OverviewTab = ({
             <span>Full Stack System Architecture</span>
           </h2>
           <p className="text-xs text-neutral-300 leading-relaxed">
-            Every section on the public portfolio is driven dynamically by MySQL database tables. Updating any field in this Admin CMS reflects immediately across the public UI and floating animations without rebuilds.
+            Every section on the public portfolio is driven dynamically from database. Updating any field in this Admin CMS reflects immediately across the public UI and floating animations without rebuilds.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">

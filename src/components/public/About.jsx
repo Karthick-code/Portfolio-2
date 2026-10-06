@@ -9,13 +9,7 @@ import {
 } from "lucide-react";
 
 export const About = ({ profile, onResumeClick }) => {
-  const interests = profile?.interests || [
-    "Full-Stack Distributed Systems",
-    "MySQL Database Optimization & Indexing",
-    "Component Systems & Micro-Interactions",
-    "REST API Design & Developer Tooling",
-    "Cloud Architecture & Containerization",
-  ];
+  const interests = profile?.interests 
 
   return (
     <section id="about" className="py-20 relative bg-neutral-100/50 dark:bg-neutral-900/30">
@@ -43,8 +37,7 @@ export const About = ({ profile, onResumeClick }) => {
                 Professional Introduction
               </h3>
               <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed text-sm sm:text-base">
-                {profile?.bio ||
-                  "I am a dedicated software engineer with an emphasis on full-stack web architectures, relational database modeling with MySQL, and high-performance user interfaces. I engineer end-to-end systems that bridge resilient server architectures with intuitive digital products."}
+                {profile?.bio }
               </p>
             </div>
 
@@ -55,8 +48,7 @@ export const About = ({ profile, onResumeClick }) => {
                   Development Philosophy
                 </h4>
                 <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                  {profile?.philosophy ||
-                    "Software craftsmanship requires balanced attention to detail: clean data modeling on the server, deterministic state handling, and delightful, accessible user experiences."}
+                  {profile?.philosophy }
                 </p>
               </div>
 
@@ -66,8 +58,7 @@ export const About = ({ profile, onResumeClick }) => {
                   Problem Solving Approach
                 </h4>
                 <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                  {profile?.approach ||
-                    "I bridge deep backend architecture with thoughtful interface engineering. Every feature begins with architectural clarity, resilient API contracts, and performant data structures."}
+                  {profile?.approach }
                 </p>
               </div>
             </div>

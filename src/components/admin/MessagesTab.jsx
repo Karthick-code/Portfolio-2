@@ -64,7 +64,7 @@ export const MessagesTab = ({ messages = [], onMessagesUpdated }) => {
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Visitor Inquiries</h1>
           <p className="text-xs font-mono text-neutral-400 mt-1">
-            Incoming contact form messages stored directly in MySQL
+            Incoming contact form messages 
           </p>
         </div>
       </div>
