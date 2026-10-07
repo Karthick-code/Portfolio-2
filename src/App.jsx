@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import { PublicPortfolio } from "./pages/PublicPortfolio.jsx";
 import { AdminLogin } from "./pages/admin/AdminLogin.jsx";
 import { AdminDashboard } from "./pages/admin/AdminDashboard.jsx";
-import { navigate } from "react-router-dom"
 
 // Check if current location points to a creator endpoint
 const isCreatorEndpoint = () => {
@@ -131,21 +130,18 @@ const AppContent = () => {
     };
   }, [isAuthenticated]);
 
-  // const navigateToPublic = useCallback(() => {
-  //   // Clear admin hash and search
-  //   if (window.location.hash.startsWith("#admin") || window.location.hash.startsWith("#creator") || window.location.hash.startsWith("#portal")) {
-  //     // window.location.hash = "";
-  //      window.history.replaceState( null, "",window.location.pathname + window.location.search );
-  //   }
-  //   if (window.location.pathname.startsWith("/admin") || window.location.pathname.startsWith("/creator") || window.location.pathname.startsWith("/portal")) {
-  //     window.history.replaceState(null, "", "/");
-  //   }
-  //   setCurrentView("public");
-  // }, []);
   const navigateToPublic = useCallback(() => {
-  setCurrentView("public");
-  navigate("/", { replace: true });
-}, [navigate]);
+    // Clear admin hash and search
+    if (window.location.hash.startsWith("#admin") || window.location.hash.startsWith("#creator") || window.location.hash.startsWith("#portal")) {
+      // window.location.hash = "";
+       window.history.replaceState( null, "",window.location.pathname + window.location.search );
+    }
+    if (window.location.pathname.startsWith("/admin") || window.location.pathname.startsWith("/creator") || window.location.pathname.startsWith("/portal")) {
+      window.history.replaceState(null, "", "/");
+    }
+    setCurrentView("public");
+  }, []);
+
 
   if (currentView === "admin-dashboard") {
     if (!isAuthenticated) {
