@@ -74,14 +74,14 @@ export const Hero = ({
             <span>Contact Me</span>
           </button>
 
-          <button
+          {/* <button
             type="button"
             onClick={onResumeClick}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-medium text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white transition-colors focus:outline-hidden"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Download Resume</span>
-          </button>
+          </button> */}
         </div>
 
         {/* Tech Stack Indicator Note */}
